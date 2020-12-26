@@ -1,4 +1,4 @@
-from das_builder.main import search_for_root
+from das_builder.utils import search_for_root
 import pathlib
 
 

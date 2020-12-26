@@ -2,32 +2,12 @@ import docker
 import os
 from jinja2 import Environment, FileSystemLoader
 import argparse
-
+from das_builder.utils import search_for_root
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-class RunnerArgs:
-    pass
-
-
-def search_for_root():
-    """
-    return the path containing the configuration file to read from for loading up and running.
-    """
-
-
-def extract_args(config_file):
-    """
-    Read from the config file and pull out the intresting arguments to pass to the execu line
-    """
-
-
-print("blah")
-
-
 def main():
-    print("main")
     parser = argparse.ArgumentParser()
     parser.add_argument("image", help="name of docker image to use")
 
