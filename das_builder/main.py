@@ -12,6 +12,7 @@ CONFIG_FILE_NAME = "das_builder.toml"
 class RunnerArgs:
     pass
 
+
 def search_for_root(search_start=os.getcwd(), file_search=CONFIG_FILE_NAME):
     """
     return the path containing the configuration file to read from for loading up and running.
