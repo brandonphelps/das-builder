@@ -22,9 +22,10 @@ def extract_args(config_file):
     
 
 
-
+print("blah")
 
 def main():
+    print("main")
     parser = argparse.ArgumentParser()
     parser.add_argument('image', help="name of docker image to use")
 
