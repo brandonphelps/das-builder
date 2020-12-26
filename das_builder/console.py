@@ -6,6 +6,10 @@ from das_builder.utils import search_for_root
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# move this to shared module for utils.
+
+CONFIG_FILE_NAME = "das_builder.toml"
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -13,7 +17,10 @@ def main():
 
     args = parser.parse_args()
 
-    current_dir = os.path.abspath(os.getcwd())
+    current_dir = search_for_root(os.getcwd())
+
+    config = load_config(os.path.join(current_dir, CONFIG_FILE_NAME))
+
     client = docker.from_env()
     j2_env = Environment(
         loader=FileSystemLoader(os.path.join(THIS_DIR, "templates")), trim_blocks=True

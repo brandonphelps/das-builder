@@ -3,7 +3,9 @@ Helper functions
 """
 
 import os
+import toml
 
+# move this to shared module for utils.
 CONFIG_FILE_NAME = "das_builder.toml"
 
 
@@ -24,3 +26,11 @@ def search_for_root(search_start=os.getcwd(), file_search=CONFIG_FILE_NAME):
         return next_p
     else:
         return None
+
+
+def load_config(config_file):
+    with open(config_file, "r") as config_file:
+        loaded_c = toml.loads(config_file.read())
+
+    # todo: add some validation here.
+    return loaded_c
