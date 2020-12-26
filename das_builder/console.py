@@ -2,7 +2,7 @@ import docker
 import os
 from jinja2 import Environment, FileSystemLoader
 import argparse
-from das_builder.utils import search_for_root
+from das_builder.utils import search_for_root, load_config
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
