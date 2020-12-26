@@ -12,14 +12,10 @@ CONFIG_FILE_NAME = "das_builder.toml"
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("image", help="name of docker image to use")
-
-    args = parser.parse_args()
-
     current_dir = search_for_root(os.getcwd())
-
     config = load_config(os.path.join(current_dir, CONFIG_FILE_NAME))
+
+    image_name = config["das-builder"]["image"]
 
     client = docker.from_env()
     j2_env = Environment(
@@ -30,7 +26,7 @@ def main():
         writer.write(j2_env.get_template("conan_build.sh").render())
 
     cont = client.containers.run(
-        args.image,
+        image_name,
         command=["bash", "docker_builder.sh"],
         volumes={current_dir: {"bind": "/work_dir", "mode": "rw"}},
         working_dir="/work_dir",
