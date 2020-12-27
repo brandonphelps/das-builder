@@ -32,5 +32,5 @@ def main():
         working_dir="/work_dir",
         detach=True,
     )
-    for i in cont.output:
-        print(i)
+    cont.wait()
+    print(cont.logs().decode('utf-8'))
