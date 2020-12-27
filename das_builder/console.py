@@ -41,7 +41,9 @@ def main():
         os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
     ) as writer:
         writer.write(
-            j2_env.get_template("conan_build.sh").render(image_name=image_name)
+            j2_env.get_template("conan_build.sh").render(image_name=image_name,
+                                                         uid=os.getuid(),
+                                                         gid=os.getgid())
         )
 
     cont = client.containers.run(
@@ -57,4 +59,4 @@ def main():
     print(cont.logs().decode("utf-8"))
 
     # todo: need to obtain the output directory from the build process
-    chown_dir(f"build/{image_name}", uid=os.getuid(), gid=os.getgid())
+    # chown_dir(f"build/{image_name}", uid=os.getuid(), gid=os.getgid())
