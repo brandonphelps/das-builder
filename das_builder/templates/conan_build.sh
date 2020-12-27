@@ -1,6 +1,4 @@
 #!/bin/bash
 
-conan install . -if build/docker
-conan build . -bf build/docker
-
-
+conan install . -if build/{{ image_name }}
+conan build . -bf build/{{ image_name }}
