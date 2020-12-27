@@ -60,3 +60,6 @@ def main():
     )
     cont.wait()
     print(cont.logs().decode("utf-8"))
+
+    # todo: need to obtain the output directory from the build process
+    chown_dir(f"build/{image_name}", uid=os.getuid(), gid=os.getgid())
