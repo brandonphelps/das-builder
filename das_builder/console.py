@@ -10,8 +10,10 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CONFIG_FILE_NAME = "das_builder.toml"
 
+
 def run_build(client, image, command):
     pass
+
 
 def chown_dir(root_path, uid, gid):
     print(root_path)
@@ -23,6 +25,7 @@ def chown_dir(root_path, uid, gid):
 
         for f in files:
             os.chown(os.path.join(root, f), uid=uid, gid=gid)
+
 
 def main():
     current_dir = search_for_root(os.getcwd())
@@ -36,27 +39,24 @@ def main():
     )
 
     os.makedirs(os.path.join(current_dir, ".das_builder"), exists_ok=True)
-    
-    with open(os.path.join(current_dir,
-                           ".das_builder",
-                           "docker_builder.sh"), "w") as writer:
-        writer.write(j2_env.get_template("conan_build.sh").render(
-            image_name=image_name
-        ))
+
+    with open(
+        os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
+    ) as writer:
+        writer.write(
+            j2_env.get_template("conan_build.sh").render(image_name=image_name)
+        )
 
     cont = client.containers.run(
         image_name,
-        # todo: should be a config option? 
+        # todo: should be a config option?
         auto_remove=True,
-        # todo: allow user direct command pass through? 
-        # path join generates host system file paths not guest system.  
+        # todo: allow user direct command pass through?
+        # path join generates host system file paths not guest system.
         command=["/bin/bash", os.path.join(".das_builder", "docker_builder.sh")],
         volumes={current_dir: {"bind": "/work_dir", "mode": "rw"}},
         working_dir="/work_dir",
         detach=True,
     )
     cont.wait()
-    print(cont.logs().decode('utf-8'))
-
-    
-    
+    print(cont.logs().decode("utf-8"))
