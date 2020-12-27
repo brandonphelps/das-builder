@@ -16,10 +16,7 @@ def run_build(client, image, command):
 
 
 def chown_dir(root_path, uid, gid):
-    print(root_path)
     for root, dirs, files in os.walk(root_path):
-        print(dirs)
-        print(files)
         for d in dirs:
             os.chown(os.path.join(root, d), uid=uid, gid=gid)
 
@@ -38,7 +35,7 @@ def main():
         loader=FileSystemLoader(os.path.join(THIS_DIR, "templates")), trim_blocks=True
     )
 
-    os.makedirs(os.path.join(current_dir, ".das_builder"), exists_ok=True)
+    os.makedirs(os.path.join(current_dir, ".das_builder"), exist_ok=True)
 
     with open(
         os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
@@ -49,8 +46,6 @@ def main():
 
     cont = client.containers.run(
         image_name,
-        # todo: should be a config option?
-        auto_remove=True,
         # todo: allow user direct command pass through?
         # path join generates host system file paths not guest system.
         command=["/bin/bash", os.path.join(".das_builder", "docker_builder.sh")],
