@@ -1,9 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Formatter
 
 # Controls when the action will run. 
-on: [push, workflow_dispatch]
+on:
+  pull_request:
+    branches:
+      - master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,10 +41,5 @@ jobs:
         run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'
       
-      - name: Test with pytest
-        run: poetry run pytest --cov=das_builder --cov-report=html
-      - name: Upload coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: html-cov
-          path: ./htmlcov
+      - name: Code Quality
+        run: poetry run black . --check
