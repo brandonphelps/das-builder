@@ -33,7 +33,7 @@ def main():
         os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
     ) as writer:
         writer.write(
-            j2_env.get_template("echo.sh").render(image_name=image_name,
+            j2_env.get_template("conan_build.sh").render(image_name=image_name,
                                                   uid=os.getuid(),
                                                   gid=os.getgid())
         )
