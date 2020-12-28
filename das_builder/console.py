@@ -7,13 +7,8 @@ from das_builder.utils import search_for_root, load_config
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# move this to shared module for utils.
-
+# todo: move this to shared module for utils.
 CONFIG_FILE_NAME = "das_builder.toml"
-
-
-def run_build(client, image, command):
-    pass
 
 
 def main():
@@ -32,9 +27,9 @@ def main():
         os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
     ) as writer:
         writer.write(
-            j2_env.get_template("conan_build.sh").render(image_name=image_name,
-                                                  uid=os.getuid(),
-                                                  gid=os.getgid())
+            j2_env.get_template("conan_build.sh").render(
+                image_name=image_name, uid=os.getuid(), gid=os.getgid()
+            )
         )
 
     client = docker.from_env()
@@ -50,9 +45,5 @@ def main():
         detach=True,
     )
 
-    t = cont.wait()
-    print("Logs from container")
-    print(cont.logs().decode("utf-8"))
-
-    # todo: need to obtain the output directory from the build process
-    # chown_dir(f"build/{image_name}", uid=os.getuid(), gid=os.getgid())
+    for log_line in cont.logs(stream=True):
+        print(log_line.decode("utf-8").strip())
