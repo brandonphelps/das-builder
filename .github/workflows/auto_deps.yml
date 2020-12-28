@@ -15,7 +15,7 @@ jobs:
       - name: Set up python
         uses: action/setup-python@v1
       - name: Install Poetry
-        uses: snok/install-poetry@v1.1.1
+        uses: snok/install-poetry@b618b9a0f1ac514ac332510e913d89907016d7b0
         with: 
           version: 1.1.4
           virtualenvs-in-project: false
