@@ -1,5 +1,8 @@
 name: Update Dependencies
 on:
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 10 * * 1'
 jobs:
@@ -31,6 +34,7 @@ jobs:
       - name: Create Pull request
         uses: peter-evans/create-pull-request@7b1819c0925468602327a69656b53a2702b9ef0b
         with:
+          base: master
           token: ${{ secrets.PAT }}
           commit-message: Updated Dependencies
           title: Update dependencies
