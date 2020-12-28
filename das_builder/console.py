@@ -22,7 +22,6 @@ def main():
 
     image_name = config["das-builder"]["image"]
 
-
     j2_env = Environment(
         loader=FileSystemLoader(os.path.join(THIS_DIR, "templates")), trim_blocks=True
     )
@@ -33,9 +32,9 @@ def main():
         os.path.join(current_dir, ".das_builder", "docker_builder.sh"), "w"
     ) as writer:
         writer.write(
-            j2_env.get_template("echo.sh").render(image_name=image_name,
-                                                  uid=os.getuid(),
-                                                  gid=os.getgid())
+            j2_env.get_template("echo.sh").render(
+                image_name=image_name, uid=os.getuid(), gid=os.getgid()
+            )
         )
 
     client = docker.from_env()
@@ -45,16 +44,15 @@ def main():
         image_name,
         # todo: allow user direct command pass through?
         # path join generates host system file paths not guest system.
-        command = cmd,
-        volumes = {current_dir: {"bind": "/work_dir", "mode": "rw"}},
-        working_dir = "/work_dir",
-        detach = True,
+        command=cmd,
+        volumes={current_dir: {"bind": "/work_dir", "mode": "rw"}},
+        working_dir="/work_dir",
+        detach=True,
     )
 
     t = cont.wait()
     print("Logs from container")
     print(cont.logs().decode("utf-8"))
-
 
     # todo: need to obtain the output directory from the build process
     # chown_dir(f"build/{image_name}", uid=os.getuid(), gid=os.getgid())
