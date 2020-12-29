@@ -15,4 +15,11 @@ searching upwards to find the root directory to which the docker container will 
 # schema
 
 [das-builder]
+
+small note(the conan boxes do not have cmake installed, so must use a cmake build requires if you wish to use these).
+
+image = "conanio/gcc7"
+
+
+
 command = "conan_build"
